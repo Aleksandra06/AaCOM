@@ -1,8 +1,6 @@
 ﻿using Fractions;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace lab1_Jordan_Gauss_Method
 {

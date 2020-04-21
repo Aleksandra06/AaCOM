@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Fractions
 {
@@ -121,7 +119,7 @@ namespace Fractions
                 if (countNull == matrix.M) indexMas.Add(nowStr);//строка занулилась
                 else if (countNull == matrix.M - 1)//противоречие типа 0*x=8
                 {
-                    if (Notify != null) Notify($"Противоречие типа 0=const \n");
+                    if (Notify != null) Notify($"Система не имеет решений \n");
                     return new List<int>() { -1 };
                 }
             }

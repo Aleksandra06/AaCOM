@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Fractions
+﻿namespace Fractions
 {
     public class Solutions_Jordan_Gauss
     {
