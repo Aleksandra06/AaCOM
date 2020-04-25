@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab2_Basic_solutions_sle_Jordan-Gauss", "lab2_Basic_solutions_sle_Jordan-Gauss\lab2_Basic_solutions_sle_Jordan-Gauss.csproj", "{42AD16AB-21AB-4EB8-AF29-A31595036E01}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fractions", "..\Simple_fractions\Fractions.csproj", "{A0250468-400D-4514-B21E-EB6F751CC408}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42AD16AB-21AB-4EB8-AF29-A31595036E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42AD16AB-21AB-4EB8-AF29-A31595036E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42AD16AB-21AB-4EB8-AF29-A31595036E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42AD16AB-21AB-4EB8-AF29-A31595036E01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0250468-400D-4514-B21E-EB6F751CC408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0250468-400D-4514-B21E-EB6F751CC408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0250468-400D-4514-B21E-EB6F751CC408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0250468-400D-4514-B21E-EB6F751CC408}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {654A55CA-B9C1-4A90-9814-C7458D986937}
+	EndGlobalSection
+EndGlobal
