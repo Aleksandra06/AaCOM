@@ -23,8 +23,23 @@
         }
         public string toString()
         {
+            if (Numerator == 0)
+            {
+                return "0";
+            }
             if (Denominator == 1) return Numerator.ToString();
             return Numerator + "/" + Denominator;
+        }
+        public double GetValue()
+        {
+            if (Denominator != 0)
+            {
+                return Numerator / Denominator;
+            }
+            else
+            {
+                return double.MaxValue;
+            }
         }
     }
 }

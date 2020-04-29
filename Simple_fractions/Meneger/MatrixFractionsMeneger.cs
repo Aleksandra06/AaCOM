@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Fractions
 {
@@ -34,14 +35,17 @@ namespace Fractions
             for (int i = 0; i < matrix.N; i++)
             {
                 //числитель
+                int coutOtr = 0;
                 for (int j = 0; j < matrix.M; j++)
                 {
                     matrix.Matrix[i, j] = sFM.Norm(matrix.Matrix[i, j]);
-                    list.Add(matrix.Matrix[i, j].Numerator);
+                    list.Add(Math.Abs(matrix.Matrix[i, j].Numerator));
+                    if (matrix.Matrix[i, j].Numerator < 0) coutOtr++;
                 }
                 list.RemoveAll(a => a == 0);
                 long nod = sFM.NOD(list);
-                if (nod == 0) break;
+                if (nod == 0) nod = -1;
+                else if (coutOtr == list.Count) nod *= -1;
                 if (nod != 1)
                 {
                     for (int j = 0; j < matrix.M; j++)

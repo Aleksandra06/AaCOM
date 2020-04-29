@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Fractions
 {
@@ -30,29 +32,43 @@ namespace Fractions
                         banIndexStrList.Add(ch);
                     }
                 }
-                if (Notify != null) Notify($"Пока что все идет по плану... наверное! \n"); 
+                if (Notify != null) Notify($"Пока что все идет по плану... наверное! \n");
                 //проверка банлиста
                 int strNullCount = CheckBanlist(check, nowStr, matrix.N);
                 if (strNullCount > 0)
                 {
-                    nowStr += strNullCount;
+                    nowStr += strNullCount - 1;
                     if (nowStr >= matrix.N)
                     {
                         if (Notify != null) Notify("Зануленная строка!\n" + matrix.toString() + "\n");
                     }
                 }
+                if (nowStr >= matrix.N)
+                {
+                    return true;
+                }
                 //проверка на 0-вой элемент
                 if (matrix.Matrix[nowStr, nowCol].Numerator == 0)
                 {
-                    SimpleFractions kof = new SimpleFractions(1,1);
-                    for (int j1 = 0; j1 < matrix.M; j1++)
+                    int Str = nowStr;
+                    Str++;
+                    if (Str >= matrix.N) { if (Notify != null) Notify($"Ведущий элемент 0, а строки закончились. Упс... \n"); return true; }
+                    while (matrix.Matrix[Str, nowCol].Numerator == 0)
                     {
-                        matrix.Matrix[nowStr, j1] = _sFM.Sum(matrix.Matrix[nowStr, j1], kof);
+                        Str++;
+                        if (Str >= matrix.N) { if (Notify != null) Notify($"Ведущий элемент 0, а строки закончились. Упс... \n"); return true; }
                     }
-                    if (Notify != null) { Notify($"Приведение: ({nowStr + 1}) * {kof.toString()} \n"); Notify(matrix.toString() + "\n"); }
+                    ObmenStrok(matrix, Str, nowStr);
+                    if (Notify != null) { Notify($"Обмен: ({nowStr} и {Str})\n"); Notify(matrix.toString() + "\n"); }
+                    //SimpleFractions kof = new SimpleFractions(1, 1);
+                    //for (int j1 = 0; j1 < matrix.M; j1++)
+                    //{
+                    //    matrix.Matrix[nowStr, j1] = _sFM.Sum(matrix.Matrix[nowStr, j1], kof);
+                    //}
+                    //if (Notify != null) { Notify($"Приведение: ({nowStr + 1}) * {kof.toString()} \n"); Notify(matrix.toString() + "\n"); }
                 }
                 //приводим к 1
-                else if (matrix.Matrix[nowStr, nowCol].Numerator != 1)
+                if (matrix.Matrix[nowStr, nowCol].Numerator != 1)
                 {
                     SimpleFractions kof = matrix.Matrix[nowStr, nowCol];
                     for (int j1 = 0; j1 < matrix.M; j1++)
@@ -124,6 +140,22 @@ namespace Fractions
                 }
             }
             return indexMas;
+        }
+
+        private bool ObmenStrok(MatrixFractions matrix, int a, int b)
+        {
+            if(a >= matrix.N || b >= matrix.N)
+            {
+                return false;
+            }
+            SimpleFractions tmp = new SimpleFractions();
+            for (int i = 0; i < matrix.M; i++)
+            {
+                tmp = matrix.Matrix[a, i];
+                matrix.Matrix[a, i] = matrix.Matrix[b, i];
+                matrix.Matrix[b, i] = tmp;
+            }
+            return true;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace lab1_Jordan_Gauss_Method
     {
         static void Main(string[] args)
         {
-            Console.Write("Номер примера (1-6): ");
+            Console.Write("Номер примера (1-7): ");
             var num = Console.ReadLine();
             string path = @"matrix\" + num + ".txt";
             //StreamReader file = new StreamReader(path, Encoding.Default);

@@ -45,23 +45,29 @@
                     if (matrix.Matrix[strNum, matrix.M - 1].Numerator == 0)
                         Notify($"x{colNum + 1} - любое\n");
                     else
-                        Notify($"Что-то пошло не так\n");
+                        Notify($"Что-то пошло не так. Противоречие. Система не имеет решений\n");
                 }
                 else if (countX > 1 && checkX == true)//когда в строке остались еще не зануленные х
                 {
-                    string strAnswer = $"x{colNum + 1} = ";
-                    if (matrix.Matrix[strNum, colNum].Numerator != matrix.Matrix[strNum, colNum].Denominator)
+                    int col = 0;
+                    while (matrix.Matrix[strNum, col].Numerator == 0)
+                    {
+                        col++;
+                        if (col >= matrix.M) { Notify($"Что-то пошло не так\n"); break; }
+                    }
+                    string strAnswer = $"x{col + 1} = ";
+                    if (matrix.Matrix[strNum, col].Numerator != matrix.Matrix[strNum, col].Denominator)
                         strAnswer += "( ";
                     if (matrix.Matrix[strNum, matrix.M - 1].Numerator != 0)
                         strAnswer += $" {matrix.Matrix[strNum, matrix.M - 1].toString()}";
-                    int idCol = matrix.N;
+                    int idCol = col;
                     while (idCol < matrix.M - 1)
                     {
                         if (matrix.Matrix[strNum, idCol].Numerator != 0)
                         {
                             if (matrix.Matrix[strNum, idCol].Numerator == matrix.Matrix[strNum, idCol].Denominator)
                             {
-                                strAnswer += $" - x{colNum + 1}";
+                                strAnswer += $" - x{idCol + 1}";
                             }
                             else
                             {
@@ -70,13 +76,37 @@
                         }
                         idCol++;
                     }
+                    if (matrix.Matrix[strNum, col].Numerator != matrix.Matrix[strNum, col].Denominator)
+                        strAnswer += $" ) / ( {matrix.Matrix[strNum, col].toString()} )";
+                    Notify($"{strAnswer}\n");
+                    //string strAnswer = $"x{colNum + 1} = ";
+                    //if (matrix.Matrix[strNum, colNum].Numerator != matrix.Matrix[strNum, colNum].Denominator)
+                    //    strAnswer += "( ";
+                    //if (matrix.Matrix[strNum, matrix.M - 1].Numerator != 0)
+                    //    strAnswer += $" {matrix.Matrix[strNum, matrix.M - 1].toString()}";
+                    //int idCol = matrix.N;
+                    //while (idCol < matrix.M - 1)
+                    //{
+                    //    if (matrix.Matrix[strNum, idCol].Numerator != 0)
+                    //    {
+                    //        if (matrix.Matrix[strNum, idCol].Numerator == matrix.Matrix[strNum, idCol].Denominator)
+                    //        {
+                    //            strAnswer += $" - x{colNum + 1}";
+                    //        }
+                    //        else
+                    //        {
+                    //            strAnswer += $" - ({matrix.Matrix[strNum, idCol].toString()})*x{idCol + 1}";
+                    //        }
+                    //    }
+                    //    idCol++;
+                    //}
                     /*SimpleFractions simpleAnswer = new SimpleFractions();
                     simpleAnswer = sfm.Division(matrix.Matrix[strNum, matrix.M - 1], matrix.Matrix[strNum, idCol]);
                     strAnswer += $"{simpleAnswer.toString()}";*/
 
-                    if (matrix.Matrix[strNum, colNum].Numerator != matrix.Matrix[strNum, colNum].Denominator)
-                        strAnswer += $" ) / ( {matrix.Matrix[strNum, colNum].toString()} )";
-                    Notify($"{strAnswer}\n");
+                    //if (matrix.Matrix[strNum, colNum].Numerator != matrix.Matrix[strNum, colNum].Denominator)
+                    //    strAnswer += $" ) / ( {matrix.Matrix[strNum, colNum].toString()} )";
+                    //Notify($"{strAnswer}\n");
                 }
                 else
                 {
