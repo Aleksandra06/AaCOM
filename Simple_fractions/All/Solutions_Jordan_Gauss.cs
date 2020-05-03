@@ -47,7 +47,7 @@
                     else
                         Notify($"Что-то пошло не так. Противоречие. Система не имеет решений\n");
                 }
-                else if (countX > 1 && checkX == true)//когда в строке остались еще не зануленные х
+                else if (countX >= 1)//когда в строке остались еще не зануленные х
                 {
                     int col = 0;
                     while (matrix.Matrix[strNum, col].Numerator == 0)

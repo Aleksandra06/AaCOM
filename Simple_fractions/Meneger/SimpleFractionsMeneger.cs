@@ -18,7 +18,7 @@ namespace Fractions
             }
             else
             {
-                long nok = NOK(Convert.ToInt32(a.Denominator), Convert.ToInt32(b.Denominator));
+                int nok = NOK(Convert.ToInt32(a.Denominator), Convert.ToInt32(b.Denominator));
                 otv.Denominator = nok;
                 otv.Numerator = a.Numerator * (nok / a.Denominator) + b.Numerator * (nok / b.Denominator);
             }
@@ -82,7 +82,7 @@ namespace Fractions
                 simpleFractions.Numerator *= -1;
                 simpleFractions.Denominator *= -1;
             }
-            var nod = NOD(new List<long> { a.Numerator, a.Denominator });
+            var nod = NOD(new List<int> { a.Numerator, a.Denominator });
             if (nod != 1)
             {
                 a.Denominator /= nod;
@@ -101,17 +101,17 @@ namespace Fractions
         /// </summary>
         public class FactorizationModel
         {
-            public long Number { get; set; }
+            public int Number { get; set; }
             public int Quantity { get; set; }
         }
         /// <summary>
         /// Разложение числа на простые множители
         /// </summary>
-        public List<FactorizationModel> Factorization(long m)
+        public List<FactorizationModel> Factorization(int m)
         {
-            long n = m;
+            int n = m;
             List<FactorizationModel> otv = new List<FactorizationModel>();
-            long div = 2;
+            int div = 2;
             int num;
             if (n < 0)
             {
@@ -139,29 +139,29 @@ namespace Fractions
             return otv;
         }
         /// <summary>
-        /// Наименьшее общее кратное, не работает с большими числами, как не иронично для long
+        /// Наименьшее общее кратное, не работает с большими числами, как не иронично для int
         /// </summary>
-        private long NOK(long n, long m)
-        {
-            long nok = 0;
-            for (long i = Math.Max(n,m); i < (n * m + 1); i++)
-            {
-                if (i % n == 0 && i % m == 0)
-                {
-                    nok = i;
-                }
-            }
-            return nok;
-        }
+        //private int NOK(int n, int m)
+        //{
+        //    int nok = 0;
+        //    for (int i = Math.Max(n,m); i < (n * m + 1); i++)
+        //    {
+        //        if (i % n == 0 && i % m == 0)
+        //        {
+        //            nok = i;
+        //        }
+        //    }
+        //    return nok;
+        //}
 
         /// <summary>
         /// Наибольший общий делитель
         /// </summary>
-        static long NOD(long a, long b)
+        static int NOD(int a, int b)
         {
             while (b != 0)
             {
-                long temp = b;
+                int temp = b;
                 b = a % b;
                 a = temp;
             }
@@ -170,20 +170,20 @@ namespace Fractions
         /// <summary>
         /// Наибольший общий делитель
         /// </summary>
-        public long NOD(List<long> list)
+        public int NOD(List<int> list)
         {
             if (list.Count == 0) return 0;
             int i;
-            long gcd = list[0];
+            int gcd = list[0];
             for (i = 0; i < list.Count - 1; i++)
                 gcd = NOD(gcd, list[i + 1]);
             return gcd;
             //list.Sort();
             //List<FactorizationModel>[] fact = new List<FactorizationModel>[list.Count];
-            ////long i = 0;
-            //long nod = 1;
+            ////int i = 0;
+            //int nod = 1;
             //bool flag;
-            //for (long i = 2; i <= list[list.Count-1]; i++)
+            //for (int i = 2; i <= list[list.Count-1]; i++)
             //{
             //    flag = true;
             //    foreach(var a in list)
@@ -225,9 +225,9 @@ namespace Fractions
             SimpleFractions fractions = simpleFractions;
             if (fractions.Numerator == 0) fractions.Denominator = 1;
             fractions = Reduction(fractions);
-            if (NOD(new List<long> { fractions.Numerator, fractions.Denominator }) != 0)
+            if (NOD(new List<int> { fractions.Numerator, fractions.Denominator }) != 0)
             {
-                long nod = NOD(new List<long> { fractions.Numerator, fractions.Denominator });
+                int nod = NOD(new List<int> { fractions.Numerator, fractions.Denominator });
                 fractions.Numerator /= nod;
                 fractions.Denominator /= nod;
             }

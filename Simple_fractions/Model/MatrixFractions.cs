@@ -13,6 +13,9 @@ namespace Fractions
         public int M { get; set; }
         public SimpleFractions[,] Matrix { get; set; }
 
+        public MatrixFractions()
+        {
+        }
         public MatrixFractions(int[,] matrInt)
         {
             N = matrInt.GetLength(0);

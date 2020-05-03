@@ -5,18 +5,18 @@
         /// <summary>
         /// Числитель
         /// </summary>
-        public long Numerator { get; set; }
+        public int Numerator { get; set; }
         /// <summary>
         /// Знаменатель
         /// </summary>
-        public long Denominator { get; set; }
+        public int Denominator { get; set; }
 
         public SimpleFractions()
         {
             Numerator = 0;
             Denominator = 1;
         }
-        public SimpleFractions(long numerator, long denominator)
+        public SimpleFractions(int numerator, int denominator)
         {
             Numerator = numerator;
             Denominator = denominator;

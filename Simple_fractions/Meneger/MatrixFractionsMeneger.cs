@@ -31,7 +31,7 @@ namespace Fractions
         {
             bool flag = false;
             SimpleFractionsMeneger sFM = new SimpleFractionsMeneger();
-            List<long> list = new List<long>();
+            List<int> list = new List<int>();
             for (int i = 0; i < matrix.N; i++)
             {
                 //числитель
@@ -43,7 +43,7 @@ namespace Fractions
                     if (matrix.Matrix[i, j].Numerator < 0) coutOtr++;
                 }
                 list.RemoveAll(a => a == 0);
-                long nod = sFM.NOD(list);
+                int nod = sFM.NOD(list);
                 if (nod == 0) nod = -1;
                 else if (coutOtr == list.Count) nod *= -1;
                 if (nod != 1)

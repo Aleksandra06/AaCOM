@@ -1,6 +1,7 @@
 ﻿using Fractions;
 using System;
 using System.IO;
+using System.Text;
 
 namespace lab2_Basic_solutions_sle_Jordan_Gauss
 {
@@ -8,6 +9,9 @@ namespace lab2_Basic_solutions_sle_Jordan_Gauss
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
+
+
             Console.Write("Номер примера (1-10): ");
             var num = Console.ReadLine();
             string path = @"matrix\" + num + ".txt";
@@ -16,9 +20,9 @@ namespace lab2_Basic_solutions_sle_Jordan_Gauss
             MatrixFractions matrixFractions = new MatrixFractions(matrix);
             matrixFractions.Print();
 
-            Solutions_Jordan_Gauss jordan_Gauss = new Solutions_Jordan_Gauss();
+            Basic_solutions_Jordan_Gauss jordan_Gauss = new Basic_solutions_Jordan_Gauss();
             jordan_Gauss.Notify += Message;
-            jordan_Gauss.Solutions_Jordan_Gauss_Metod(matrixFractions);
+            jordan_Gauss.Basic_solutions_Jordan_Gauss_Metod(matrixFractions);
             // jordan_Gauss.Notify += Message;
             //jordan_Gauss.Rectangle(matrixFractions);
             //Rectangle rectangle = new Rectangle();
