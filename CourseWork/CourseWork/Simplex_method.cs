@@ -1,6 +1,7 @@
 ﻿using Fractions;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 
@@ -14,18 +15,84 @@ namespace CourseWork
         SimpleFractionsMeneger sFM = new SimpleFractionsMeneger();
         public bool SimplexMethod(MatrixFractions matrix, List<int> basis, List<SimpleFractions> F, bool min)
         {
+            //прямоугольники
             var flag = Rectangle(matrix, basis);
             if (!flag) return false;
             //создание таблички
             var table = CreateTable(matrix, basis, F);
-            PrintTable(table, basis);
-            List<List<List<SimpleFractions>>> megaList = new List<List<List<SimpleFractions>>>();
-
-
+            PrintTable(table, basis, null);
+            //симпликс метод
+            List<SimpleFractions> co = new List<SimpleFractions>();
+            while (CheckF(table, min))
+            {
+                var search = Search(table, basis, F, co);
+                table = NextTable(table, basis, F, search);
+                PrintTable(table, basis, null);
+            }
             return true;
         }
-
-        private void PrintTable(List<List<SimpleFractions>> list, List<int> basis)
+        /// <summary>
+        /// Поиск ведущего элемента
+        /// </summary>
+        private List<List<SimpleFractions>> NextTable(List<List<SimpleFractions>> table, List<int> basis, List<SimpleFractions> F, Tuple<int, int> search)
+        {
+            List<List<SimpleFractions>> newTable = new List<List<SimpleFractions>>();
+            for (int i = 0; i < table.Count; i++)
+            {
+                newTable.Add(new List<SimpleFractions>());
+                for (int j = 0; j < table[i].Count; j++)
+                {
+                    newTable.LastOrDefault().Add(sFM.Difference(table[i][j], sFM.Division(sFM.Multiplication(table[search.Item2][j], table[i][search.Item1]), table[search.Item2][search.Item1])));
+                }
+            }
+            return newTable;
+        }
+        /// <summary>
+        /// Поиск ведущего элемента
+        /// </summary>
+        private Tuple<int, int> Search(List<List<SimpleFractions>> table, List<int> basis, List<SimpleFractions> F, List<SimpleFractions> co)
+        {
+            //ищем индес по горизонтали
+            List<SimpleFractions> list = table[table.Count -1];
+            list.RemoveAll(a => a.Numerator == 0);
+            list.Remove(list[0]);
+            list.Sort(); //найти как сортировать дроби
+            var indexh = table[table.Count].FindIndex(i => i.Numerator == list[0].Numerator && i.Denominator == list[0].Denominator);
+            //считаем со
+            co.Clear();
+            for (int i = 0; i < table.Count - 1; i++)
+            {
+                if (table[i][0].Numerator != 0)
+                    co.Add(sFM.Division(table[i][0], table[i][0]));
+                else
+                    co.Add(null);
+            }
+            list = co;
+            list.RemoveAll(a => a.Numerator == 0);
+            list.Remove(list[0]);
+            list.Sort();
+            var indexV = table[table.Count].FindIndex(i => i.Numerator == list[0].Numerator && i.Denominator == list[0].Denominator);
+            return new Tuple<int, int>(indexh, indexV);
+        }
+        /// <summary>
+        /// Проверка, продолжаем считать, или все
+        /// </summary>
+        private bool CheckF(List<List<SimpleFractions>> table, bool min)
+        {
+            if (min)
+            {
+                foreach (var l in table[table.Count - 1])
+                {
+                    if ((l.Numerator > 0 && l.Denominator > 0) || (l.Denominator < 0 && l.Numerator < 0)) return true;
+                }
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// Вывод таблицы
+        /// </summary>
+        private void PrintTable(List<List<SimpleFractions>> list, List<int> basis, List<SimpleFractions> co)
         {
             if (Notify == null) return;
             string str = "";
