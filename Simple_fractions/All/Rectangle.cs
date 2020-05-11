@@ -75,7 +75,7 @@ namespace Fractions
                     {
                         matrix.Matrix[nowStr, j1] = _sFM.Division(matrix.Matrix[nowStr, j1], kof);
                     }
-                    if (Notify != null) { Notify($"Приведение: ({nowStr + 1}) * {kof.toString()} \n"); Notify(matrix.toString() + "\n"); }
+                    if (Notify != null) { Notify($"Приведение: ({nowStr + 1}) : {kof.toString()} \n"); Notify(matrix.toString() + "\n"); }
                 }
                 //прямоугольники
                 for (int j1 = nowStr + 1; j1 < matrix.M; j1++)
