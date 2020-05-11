@@ -14,7 +14,8 @@ namespace CourseWork
             if (matrix == null) return;
             MatrixFractions matrixFractions = new MatrixFractions(matrix);
             matrixFractions.Print();
-            List<SimpleFractions> F = new List<SimpleFractions>() { new SimpleFractions(9, 1), new SimpleFractions(2, 1) };
+            List<SimpleFractions> F = new List<SimpleFractions>() { new SimpleFractions(9, 1), new SimpleFractions(2, 1),
+            new SimpleFractions(0, 1), new SimpleFractions(0, 1), new SimpleFractions(0, 1), new SimpleFractions(0, 1)};
             List<int> basis = new List<int>() { 0, 1, 4 };
             var simplex_method = new Simplex_method();
             simplex_method.Notify += Message;

@@ -223,7 +223,7 @@ namespace Fractions
         public SimpleFractions Norm(SimpleFractions simpleFractions)
         {
             SimpleFractions fractions = simpleFractions;
-            if (fractions.Numerator == 0) fractions.Denominator = 1;
+            if (fractions.Numerator == 0) { fractions.Denominator = 1; return fractions; }
             fractions = Reduction(fractions);
             if (NOD(new List<int> { fractions.Numerator, fractions.Denominator }) != 0)
             {
