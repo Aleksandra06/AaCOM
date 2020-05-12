@@ -23,10 +23,10 @@ namespace CourseWork
             List<SimpleFractions> co = new List<SimpleFractions>();
             var table = CreateTable(matrix, basis, F);
             var search = Search(table, basis, co);
-            F = table[table.Count - 1].ToList();
-            F.Remove(F[0]);
+            //F = table[table.Count - 1].ToList();
+            //F.Remove(F[0]);
             PrintTable(table, basis, co);
-            while (true)
+            while (CheckF(table, min))
             {
                 table = NextTable(table, basis, search, co);
                 if (!CheckF(table, min)) break;
@@ -59,12 +59,12 @@ namespace CourseWork
                     answer.Add(new SimpleFractions(0, 1));
                 }
             }
-            SimpleFractions fAnswer = new SimpleFractions(0,1);
+            SimpleFractions fAnswer = new SimpleFractions(0, 1);
             for (int i = 0; i < answer.Count; i++)
             {
                 fAnswer = sFM.Sum(fAnswer, sFM.Multiplication(answer[i], F[i]));
             }
-           // fAnswer = sFM.Sum(fAnswer, F[F.Count - 1]);
+             fAnswer = sFM.Sum(fAnswer, F[F.Count - 1]);
             answer.Add(fAnswer);
             str += "F(X) = " + fAnswer.toString();
             if (Notify != null) Notify(str);
@@ -129,15 +129,12 @@ namespace CourseWork
         /// </summary>
         private bool CheckF(List<List<SimpleFractions>> table, bool min)
         {
-            if (min)
+            for (int i = 1; i < table[table.Count - 1].Count; i++)
             {
-                foreach (var l in table[table.Count - 1])
-                {
-                    if ((l.Numerator > 0 && l.Denominator > 0) || (l.Denominator < 0 && l.Numerator < 0)) return true;
-                }
-                return false;
+                if ((table[table.Count - 1][i].Numerator > 0 && table[table.Count - 1][i].Denominator > 0) ||
+                    (table[table.Count - 1][i].Denominator < 0 && table[table.Count - 1][i].Numerator < 0)) return true;
             }
-            return true;
+            return false;
         }
         /// <summary>
         /// Вывод таблицы
@@ -186,8 +183,8 @@ namespace CourseWork
                     }
                 }
                 list.Add(new List<SimpleFractions>());
-                list.LastOrDefault().Add(new SimpleFractions(0, 1));
-                for (int j = 1; j < matrix.M; j++)
+                //list.LastOrDefault().Add(new SimpleFractions(0, 1));
+                for (int j = 0; j < matrix.M; j++)
                 {
                     SimpleFractions fractions;
                     fractions = sFM.Multiplication(list[0][j], F[0]);
