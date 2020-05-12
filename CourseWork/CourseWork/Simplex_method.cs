@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace CourseWork
 {
@@ -19,16 +20,19 @@ namespace CourseWork
             var flag = Rectangle(matrix, basis);
             if (!flag) return false;
             //создание таблички
-            var table = CreateTable(matrix, basis, F);
-            PrintTable(table, basis, null);
-            //симпликс метод
             List<SimpleFractions> co = new List<SimpleFractions>();
+            var table = CreateTable(matrix, basis, F);
+            var search = Search(table, basis, co);
+            F = table[table.Count - 1].ToList();
+            F.Remove(F[0]);
+            PrintTable(table, basis, null);
             while (CheckF(table, min))
             {
-                var search = Search(table, basis, co);
                 table = NextTable(table, basis, search, co);
+                search = Search(table, basis, co);
                 PrintTable(table, basis, co);
             }
+            PrintTable(table, basis, null);
             PrintAnswer(table, basis, F);
             return true;
         }
@@ -59,7 +63,7 @@ namespace CourseWork
             {
                 fAnswer = sFM.Sum(fAnswer, sFM.Multiplication(answer[i], F[i]));
             }
-            fAnswer = sFM.Sum(fAnswer, F[F.Count - 1]);
+           // fAnswer = sFM.Sum(fAnswer, F[F.Count - 1]);
             answer.Add(fAnswer);
             str += "F(X) = " + fAnswer.toString();
             if (Notify != null) Notify(str);

@@ -240,7 +240,17 @@ namespace Fractions
             return fractions;
         }
         /// <summary>
-        /// Поиск индекса минимального элемента. В случае пустого листа возвращается -1.
+        /// Модуль
+        /// </summary>
+        public SimpleFractions Mod(SimpleFractions fractions)
+        {
+            SimpleFractions f = new SimpleFractions();
+            if (fractions.Numerator < 0) f.Numerator = fractions.Numerator * -1;
+            if (fractions.Denominator < 0) f.Denominator = fractions.Denominator * -1;
+            return f;
+        }
+        /// <summary>
+        /// Поиск индекса минимального по модулю элемента. В случае пустого листа возвращается -1.
         /// </summary>
         public int SearchMax(List<SimpleFractions> list)
         {
@@ -258,7 +268,7 @@ namespace Fractions
             return idmax;
         }
         /// <summary>
-        /// Поиск индекса минимального элемента. В случае пустого листа возвращается -1.
+        /// Поиск индекса минимального по модулю элемента. В случае пустого листа возвращается -1.
         /// </summary>
         public int SearchMin(List<SimpleFractions> list)
         {
@@ -268,7 +278,7 @@ namespace Fractions
             for (int i = 1; i < list.Count; i++)
             {
                 if (list[i] == null) continue;
-                if (!Comparisons(list[idmin], list[i]))
+                if (!Comparisons(Mod(list[idmin]), Mod(list[i])))
                 {
                     idmin = i;
                 }
