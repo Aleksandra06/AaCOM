@@ -25,10 +25,11 @@ namespace CourseWork
             var search = Search(table, basis, co);
             F = table[table.Count - 1].ToList();
             F.Remove(F[0]);
-            PrintTable(table, basis, null);
-            while (CheckF(table, min))
+            PrintTable(table, basis, co);
+            while (true)
             {
                 table = NextTable(table, basis, search, co);
+                if (!CheckF(table, min)) break;
                 search = Search(table, basis, co);
                 PrintTable(table, basis, co);
             }
