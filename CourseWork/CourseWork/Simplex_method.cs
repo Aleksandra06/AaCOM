@@ -25,53 +25,98 @@ namespace CourseWork
             List<SimpleFractions> co = new List<SimpleFractions>();
             while (CheckF(table, min))
             {
-                var search = Search(table, basis, F, co);
-                table = NextTable(table, basis, F, search);
-                PrintTable(table, basis, null);
+                var search = Search(table, basis, co);
+                table = NextTable(table, basis, search, co);
+                PrintTable(table, basis, co);
             }
+            PrintAnswer(table, basis, F);
             return true;
+        }
+        /// <summary>
+        /// Вывод ответа
+        /// </summary>
+        private List<SimpleFractions> PrintAnswer(List<List<SimpleFractions>> table, List<int> basis, List<SimpleFractions> F)
+        {
+            List<SimpleFractions> answer = new List<SimpleFractions>();
+            string str = "";
+            for (int j = 1; j < table[0].Count; j++)
+            {
+                str += "x" + j + " = ";
+                var id = basis.FindIndex(a => a == j - 1);
+                if (id >= 0)
+                {
+                    str += table[id][0].toString() + "\n";
+                    answer.Add(table[id][0]);
+                }
+                else
+                {
+                    str += "0\n";
+                    answer.Add(new SimpleFractions(0, 1));
+                }
+            }
+            SimpleFractions fAnswer = new SimpleFractions(0,1);
+            for (int i = 0; i < answer.Count; i++)
+            {
+                fAnswer = sFM.Sum(fAnswer, sFM.Multiplication(answer[i], F[i]));
+            }
+            fAnswer = sFM.Sum(fAnswer, F[F.Count - 1]);
+            answer.Add(fAnswer);
+            str += "F(X) = " + fAnswer.toString();
+            if (Notify != null) Notify(str);
+            return answer;
         }
         /// <summary>
         /// Поиск ведущего элемента
         /// </summary>
-        private List<List<SimpleFractions>> NextTable(List<List<SimpleFractions>> table, List<int> basis, List<SimpleFractions> F, Tuple<int, int> search)
+        private List<List<SimpleFractions>> NextTable(List<List<SimpleFractions>> table, List<int> basis, Tuple<int, int> search, List<SimpleFractions> co)
         {
             List<List<SimpleFractions>> newTable = new List<List<SimpleFractions>>();
             for (int i = 0; i < table.Count; i++)
             {
                 newTable.Add(new List<SimpleFractions>());
-                for (int j = 0; j < table[i].Count; j++)
+                if (i == search.Item2)
                 {
-                    newTable.LastOrDefault().Add(sFM.Difference(table[i][j], sFM.Division(sFM.Multiplication(table[search.Item2][j], table[i][search.Item1]), table[search.Item2][search.Item1])));
+                    for (int j = 0; j < table[i].Count; j++)
+                    {
+                        newTable.LastOrDefault().Add(sFM.Division(table[i][j], table[search.Item2][search.Item1]));
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < table[i].Count; j++)
+                    {
+                        newTable.LastOrDefault().Add(sFM.Difference(table[i][j], sFM.Division(sFM.Multiplication(table[search.Item2][j], table[i][search.Item1]), table[search.Item2][search.Item1])));
+                    }
                 }
             }
+            basis[search.Item2] = search.Item1 - 1;
             return newTable;
         }
         /// <summary>
         /// Поиск ведущего элемента
         /// </summary>
-        private Tuple<int, int> Search(List<List<SimpleFractions>> table, List<int> basis, List<SimpleFractions> F, List<SimpleFractions> co)
+        private Tuple<int, int> Search(List<List<SimpleFractions>> table, List<int> basis, List<SimpleFractions> co)
         {
             //ищем индес по горизонтали
-            List<SimpleFractions> list = table[table.Count -1];
-            list.RemoveAll(a => a.Numerator == 0);
+            List<SimpleFractions> list = new List<SimpleFractions>();
+            list = table[table.Count - 1].ToList();
+            //list.RemoveAll(a => a.Numerator == 0);
             list.Remove(list[0]);
-            list.Sort(); //найти как сортировать дроби
-            var indexh = table[table.Count].FindIndex(i => i.Numerator == list[0].Numerator && i.Denominator == list[0].Denominator);
+            //list.Sort(); //найти как сортировать дроби
+            //var indexh = table[table.Count].FindIndex(i => i.Numerator == list[0].Numerator && i.Denominator == list[0].Denominator);
+            var indexh = sFM.SearchMax(list);
+            indexh++;
             //считаем со
             co.Clear();
             for (int i = 0; i < table.Count - 1; i++)
             {
-                if (table[i][0].Numerator != 0)
-                    co.Add(sFM.Division(table[i][0], table[i][0]));
+                if (table[i][indexh].Numerator != 0 && (table[i][indexh].Numerator > 0 && table[i][indexh].Denominator > 0)
+                    || (table[i][indexh].Numerator < 0 && table[i][indexh].Denominator < 0))
+                    co.Add(sFM.Division(table[i][0], table[i][indexh]));
                 else
                     co.Add(null);
             }
-            list = co;
-            list.RemoveAll(a => a.Numerator == 0);
-            list.Remove(list[0]);
-            list.Sort();
-            var indexV = table[table.Count].FindIndex(i => i.Numerator == list[0].Numerator && i.Denominator == list[0].Denominator);
+            var indexV = sFM.SearchMin(co);
             return new Tuple<int, int>(indexh, indexV);
         }
         /// <summary>
@@ -108,6 +153,10 @@ namespace CourseWork
                 {
                     str += l.toString() + "\t|";
                 }
+                if (co != null && num < co.Count && co[num] != null)
+                {
+                    str += co[num].toString();
+                }
                 str += "\n";
                 str += "------------------------------------------------------------------\n";
                 num++;
@@ -132,8 +181,8 @@ namespace CourseWork
                     }
                 }
                 list.Add(new List<SimpleFractions>());
-                //list.LastOrDefault().Add(new SimpleFractions(0, 1));
-                for (int j = 0; j < matrix.M; j++)
+                list.LastOrDefault().Add(new SimpleFractions(0, 1));
+                for (int j = 1; j < matrix.M; j++)
                 {
                     SimpleFractions fractions;
                     fractions = sFM.Multiplication(list[0][j], F[0]);

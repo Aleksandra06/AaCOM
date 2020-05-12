@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Fractions
 {
@@ -231,12 +232,60 @@ namespace Fractions
                 fractions.Numerator /= nod;
                 fractions.Denominator /= nod;
             }
-            if(fractions.Denominator < 0)
+            if (fractions.Denominator < 0)
             {
                 fractions.Numerator *= -1;
                 fractions.Denominator *= -1;
             }
             return fractions;
+        }
+        /// <summary>
+        /// Поиск индекса минимального элемента. В случае пустого листа возвращается -1.
+        /// </summary>
+        public int SearchMax(List<SimpleFractions> list)
+        {
+            if (list == null || list.Count < 2) return -1;
+            int idmax = 0;
+            while (list[idmax] == null) { idmax++; if (list.Count == idmax) return -1; }
+            for (int i = 1; i < list.Count; i++)
+            {
+                if (list[i] == null) continue;
+                if (Comparisons(list[idmax], list[i]))
+                {
+                    idmax = i;
+                }
+            }
+            return idmax;
+        }
+        /// <summary>
+        /// Поиск индекса минимального элемента. В случае пустого листа возвращается -1.
+        /// </summary>
+        public int SearchMin(List<SimpleFractions> list)
+        {
+            if (list == null || list.Count < 2) return -1;
+            int idmin = 0;
+            while (list[idmin] == null) { idmin++; if (list.Count == idmin) return -1; }
+            for (int i = 1; i < list.Count; i++)
+            {
+                if (list[i] == null) continue;
+                if (!Comparisons(list[idmin], list[i]))
+                {
+                    idmin = i;
+                }
+            }
+            return idmin;
+        }
+        /// <summary>
+        /// Если a < b, то true, иначе false
+        /// </summary>
+        public bool Comparisons(SimpleFractions a, SimpleFractions b)
+        {
+            var c = Difference(b, a);
+            if ((c.Numerator > 0 && c.Denominator > 0) || (c.Denominator < 0 && c.Numerator < 0))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
