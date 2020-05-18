@@ -1,10 +1,7 @@
 ﻿using Fractions;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace CourseWork
 {
@@ -16,15 +13,11 @@ namespace CourseWork
         SimpleFractionsMeneger sFM = new SimpleFractionsMeneger();
         public bool SimplexMethod(MatrixFractions matrix, List<int> basis, List<SimpleFractions> F, bool min)
         {
-            //прямоугольники
             var flag = Rectangle(matrix, basis);
             if (!flag) return false;
-            //создание таблички
             List<SimpleFractions> co = new List<SimpleFractions>();
             var table = CreateTable(matrix, basis, F);
             var search = Search(table, basis, co);
-            //F = table[table.Count - 1].ToList();
-            //F.Remove(F[0]);
             PrintTable(table, basis, co);
             while (CheckF(table, min))
             {
@@ -66,7 +59,7 @@ namespace CourseWork
             }
              fAnswer = sFM.Sum(fAnswer, F[F.Count - 1]);
             answer.Add(fAnswer);
-            str += "F(X) = " + fAnswer.toString();
+            str += "Z = " + fAnswer.toString();
             if (Notify != null) Notify(str);
             return answer;
         }
@@ -102,16 +95,11 @@ namespace CourseWork
         /// </summary>
         private Tuple<int, int> Search(List<List<SimpleFractions>> table, List<int> basis, List<SimpleFractions> co)
         {
-            //ищем индес по горизонтали
             List<SimpleFractions> list = new List<SimpleFractions>();
             list = table[table.Count - 1].ToList();
-            //list.RemoveAll(a => a.Numerator == 0);
             list.Remove(list[0]);
-            //list.Sort(); //найти как сортировать дроби
-            //var indexh = table[table.Count].FindIndex(i => i.Numerator == list[0].Numerator && i.Denominator == list[0].Denominator);
             var indexh = sFM.SearchMax(list);
             indexh++;
-            //считаем со
             co.Clear();
             for (int i = 0; i < table.Count - 1; i++)
             {
@@ -183,7 +171,6 @@ namespace CourseWork
                     }
                 }
                 list.Add(new List<SimpleFractions>());
-                //list.LastOrDefault().Add(new SimpleFractions(0, 1));
                 for (int j = 0; j < matrix.M; j++)
                 {
                     SimpleFractions fractions;
@@ -208,7 +195,6 @@ namespace CourseWork
         /// </summary>
         private bool Rectangle(MatrixFractions matrix, List<int> basis)
         {
-            //обмен столбцов, чтоб базис был в начале матрицы, дабы метод прямоугольников не надо было переписывать и все и так работало правильно
             List<Tuple<int, int>> obmen = new List<Tuple<int, int>>();
             int numStr = 0;
             basis.Sort();
@@ -223,13 +209,11 @@ namespace CourseWork
                 ObmenColumn(matrix, numStr, b, true);
                 numStr++;
             }
-            //прямоугольник
             if (Notify != null) Notify($"Оптимизация для метода прямоугольников:\n{matrix.toString()}\n");
             Rectangle rectangle = new Rectangle();
             rectangle.Notify += Message;
             var flag = rectangle.RectangleMetod(matrix);
             if (!flag) { if (Notify != null) Notify($"Ошибка в методе прямоугольников\n"); return false; }
-            //обмен столбцов обратно
             foreach (var o in obmen)
             {
                 ObmenColumn(matrix, o.Item1, o.Item2, false);

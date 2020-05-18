@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Fractions
 {
@@ -18,7 +16,6 @@ namespace Fractions
             if (matrix.M < matrix.N) { if (Notify != null) Notify($"Строк больше столбцов! Невозможно решить! (Код 1.0)\n"); return false; }
             for (int nowStr = 0, nowCol = 0; nowStr < matrix.N || nowCol < matrix.N; nowStr++, nowCol++)
             {
-                // nowStr += CheckBanlist(check, nowStr, matrix.N);
                 if (_mFM.Norm(matrix))
                     if (Notify != null) Notify("Сокращение:\n" + matrix.toString() + "\n");
                 //блок проверки
@@ -60,12 +57,6 @@ namespace Fractions
                     }
                     ObmenStrok(matrix, Str, nowStr);
                     if (Notify != null) { Notify($"Обмен: ({nowStr} и {Str})\n"); Notify(matrix.toString() + "\n"); }
-                    //SimpleFractions kof = new SimpleFractions(1, 1);
-                    //for (int j1 = 0; j1 < matrix.M; j1++)
-                    //{
-                    //    matrix.Matrix[nowStr, j1] = _sFM.Sum(matrix.Matrix[nowStr, j1], kof);
-                    //}
-                    //if (Notify != null) { Notify($"Приведение: ({nowStr + 1}) * {kof.toString()} \n"); Notify(matrix.toString() + "\n"); }
                 }
                 //приводим к 1
                 if (matrix.Matrix[nowStr, nowCol].Numerator != 1)
@@ -132,8 +123,8 @@ namespace Fractions
                     if (matrix.Matrix[nowStr, nowCol].Numerator == 0) countNull++;
                     else break;
                 }
-                if (countNull == matrix.M) indexMas.Add(nowStr);//строка занулилась
-                else if (countNull == matrix.M - 1)//противоречие типа 0*x=8
+                if (countNull == matrix.M) indexMas.Add(nowStr);
+                else if (countNull == matrix.M - 1)
                 {
                     if (Notify != null) Notify($"Система не имеет решений \n");
                     return new List<int>() { -1 };
@@ -144,7 +135,7 @@ namespace Fractions
 
         private bool ObmenStrok(MatrixFractions matrix, int a, int b)
         {
-            if(a >= matrix.N || b >= matrix.N)
+            if (a >= matrix.N || b >= matrix.N)
             {
                 return false;
             }
