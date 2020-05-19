@@ -10,7 +10,7 @@ using System.Text;
 namespace lab3_Transport_task
 {
     //-1 - не проверен
-    //0 - проверен и исключен
+    //-2 - проверен и исключен
     //другое положительное - учитывается (множитель)
     class Program
     {
@@ -33,18 +33,30 @@ namespace lab3_Transport_task
         {
             string str = "Z = ";
             int answer = 0;
-            foreach(var tstr in table)
+            int count = 0;
+            foreach (var tstr in table)
             {
-                foreach(var tcl in tstr)
+                foreach (var tcl in tstr)
                 {
-                    if(tcl.Item2 > 0)
+                    if (tcl.Item2 >= 0)
                     {
                         str += " + " + tcl.Item1 + " * " + tcl.Item2;
                         answer += tcl.Item1 * tcl.Item2;
+                        count++;
                     }
                 }
             }
             str += " = " + answer;
+            Console.WriteLine(str);
+            str = (table.Count - 1) + " + " + (table[0].Count - 1) + " - " + 1;
+            if (count == table.Count + table[0].Count - 1 - 2)
+            {
+                str += " == " + count + " => невырожденная";
+            }
+            else
+            {
+                str += " != " + count + " => вырожденная";
+            }
             Console.WriteLine(str);
             return answer;
         }
@@ -98,7 +110,7 @@ namespace lab3_Transport_task
                         {
                             continue;
                         }
-                        table[minId.Item1][i] = new Tuple<int, int>(table[minId.Item1][i].Item1, 0);
+                        table[minId.Item1][i] = new Tuple<int, int>(table[minId.Item1][i].Item1, -2);
                     }
                 }
                 else //столбец
@@ -114,7 +126,7 @@ namespace lab3_Transport_task
                         {
                             continue;
                         }
-                        table[i][minId.Item2] = new Tuple<int, int>(table[i][minId.Item2].Item1, 0);
+                        table[i][minId.Item2] = new Tuple<int, int>(table[i][minId.Item2].Item1, -2);
                     }
                 }
                 table[minId.Item1][table[0].Count - 1] = new Tuple<int, int>(table[minId.Item1][table[0].Count - 1].Item1 - min, -1);
@@ -215,14 +227,14 @@ namespace lab3_Transport_task
                 if (border)
                 {
                     if (i < tuples.Count - 1)
-                        str = "|A" + i + "\t|";
+                        str = "|A" + (i + 1) + "\t|";
                     else
                         str = "|Потреб\t|";
                 }
                 else str = "";
                 for (int j = 0; j < tuples[i].Count; j++)
                 {
-                    if (tuples[i][j].Item2 == 0)
+                    if (tuples[i][j].Item2 == -2)
                         str += "-\t|";
                     else if (tuples[i][j].Item2 == -1)
                         str += tuples[i][j].Item1 + "\t|";
