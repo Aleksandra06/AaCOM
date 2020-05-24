@@ -60,7 +60,7 @@
                         strAnswer += "( ";
                     if (matrix.Matrix[strNum, matrix.M - 1].Numerator != 0)
                         strAnswer += $" {matrix.Matrix[strNum, matrix.M - 1].toString()}";
-                    int idCol = col;
+                    int idCol = col + 1;
                     while (idCol < matrix.M - 1)
                     {
                         if (matrix.Matrix[strNum, idCol].Numerator != 0)

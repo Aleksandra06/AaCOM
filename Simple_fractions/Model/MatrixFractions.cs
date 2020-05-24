@@ -56,5 +56,20 @@ namespace Fractions
             }
             return str;
         }
+        public MatrixFractions Copy()
+        {
+            var newMatrix = new MatrixFractions();
+            newMatrix.M = M;
+            newMatrix.N = N;
+            newMatrix.Matrix = new SimpleFractions[N, M];
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < M; j++)
+                {
+                    newMatrix.Matrix[i, j] = new SimpleFractions(Matrix[i, j].Numerator, Matrix[i, j].Denominator);
+                }
+            }
+            return newMatrix;
+        }
     }
 }

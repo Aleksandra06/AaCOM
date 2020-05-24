@@ -59,7 +59,7 @@ namespace Fractions
                     if (Notify != null) { Notify($"Обмен: ({nowStr} и {Str})\n"); Notify(matrix.toString() + "\n"); }
                 }
                 //приводим к 1
-                if (matrix.Matrix[nowStr, nowCol].Numerator != 1)
+                if (matrix.Matrix[nowStr, nowCol].Numerator != matrix.Matrix[nowStr, nowCol].Denominator)
                 {
                     SimpleFractions kof = matrix.Matrix[nowStr, nowCol];
                     for (int j1 = 0; j1 < matrix.M; j1++)
